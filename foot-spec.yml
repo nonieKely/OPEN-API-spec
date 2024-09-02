@@ -57,4 +57,61 @@ paths:
                 items:
                   $ref: '#/components/schemas/Competitions'
 
+  Teams:
+  get:
+    summary: Get the list of teams
+    parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        required: true
+        description: The page number to retrieve.
+      - in: query
+        name: pageSize
+        schema:
+          type: integer
+        required: true
+        description: The number of items per page.
+    responses:
+      200:
+        description: List of teams
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Teams'
+  post:
+    summary: Create a team
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the team
+                slogan:
+                  type: string
+                  description: The team's slogan
+                competitions_list:
+                  type: array
+                  description: List of competitions the team is playing in
+                players:
+                  type: array
+                  description: List of players
+    responses:
+      200:
+        description: List of created teams
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/Teams'
 
