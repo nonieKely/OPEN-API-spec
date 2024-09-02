@@ -71,6 +71,11 @@ paths:
             type: integer
           required: true
           description: The number of items per page.
+        - in: query
+          name: teamName
+          schema:
+            type: string
+          description: Filter the list of teams based on the provided team name.
       responses:
         200:
           description: List of teams
@@ -189,7 +194,7 @@ paths:
 
   /teams/{teamName}/players/{playerName}:
     put:
-      summary: Update player information 
+      summary: Update player information in a team
       parameters:
         - in: path
           name: teamName
