@@ -45,7 +45,7 @@ paths:
                     type: string
                     description: The name of the competition
                   location:
-                    type: integer
+                    type: string
                     description: Location of the competition
       responses:
         200:
@@ -56,3 +56,5 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Competitions'
+
+
