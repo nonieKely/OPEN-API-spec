@@ -1,0 +1,58 @@
+openapi: 3.0.3
+info:
+  title: STD23054-FOOT-SPEC
+  version: '1.0.2'
+servers:
+  - url: https://localhost.std23054.com
+paths:
+  Competitions:
+    get:
+      summary: Get the list of competitions
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: The page number to retrieve.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: The number of items per page.
+      responses:
+        200:
+          description: List of competitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Competitions'
+    post:
+      summary: Create a competition
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  name:
+                    type: string
+                    description: The name of the competition
+                  location:
+                    type: integer
+                    description: Location of the competition
+      responses:
+        200:
+          description: List of created competitions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Competitions'
