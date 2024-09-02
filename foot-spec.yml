@@ -5,7 +5,7 @@ info:
 servers:
   - url: https://localhost.std23054.com
 paths:
-  Competitions:
+  /competitions:
     get:
       summary: Get the list of competitions
       parameters:
@@ -29,7 +29,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Competitions'
+                  $ref: '#/components/schemas/Competition'
     post:
       summary: Create a competition
       requestBody:
@@ -37,16 +37,14 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                type: object
-                properties:
-                  name:
-                    type: string
-                    description: The name of the competition
-                  location:
-                    type: string
-                    description: Location of the competition
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the competition
+                location:
+                  type: string
+                  description: Location of the competition
       responses:
         200:
           description: List of created competitions
@@ -55,42 +53,40 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Competitions'
+                  $ref: '#/components/schemas/Competition'
 
-  Teams:
-  get:
-    summary: Get the list of teams
-    parameters:
-      - in: query
-        name: page
-        schema:
-          type: integer
+  /teams:
+    get:
+      summary: Get the list of teams
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          required: true
+          description: The page number to retrieve.
+        - in: query
+          name: pageSize
+          schema:
+            type: integer
+          required: true
+          description: The number of items per page.
+      responses:
+        200:
+          description: List of teams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Team'
+    post:
+      summary: Create a team
+      requestBody:
         required: true
-        description: The page number to retrieve.
-      - in: query
-        name: pageSize
-        schema:
-          type: integer
-        required: true
-        description: The number of items per page.
-    responses:
-      200:
-        description: List of teams
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/Teams'
-  post:
-    summary: Create a team
-    requestBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
               type: object
               properties:
                 name:
@@ -99,19 +95,89 @@ paths:
                 slogan:
                   type: string
                   description: The team's slogan
-                competitions_list:
-                  type: array
-                  description: List of competitions the team is playing in
-                players:
-                  type: array
-                  description: List of players
-    responses:
-      200:
-        description: List of created teams
+      responses:
+        200:
+          description: List of created teams
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+
+  /teams/{teamName}/competitions:
+    post:
+      summary: Assign competitions to a team
+      parameters:
+        - in: path
+          name: teamName
+          schema:
+            type: string
+          required: true
+          description: The name of the team that will be assigned
+      requestBody:
+        required: true
         content:
           application/json:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/Teams'
+                type: string
+                description: List of competition names to assign to the team
+      responses:
+        200:
+          description: Competitions assigned
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
 
+  /teams/{teamName}/players:
+    post:
+      summary: Add players to a team
+      parameters:
+        - in: path
+          name: teamName
+          schema:
+            type: string
+          required: true
+          description: The name of the team
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: string
+                description: List of player names to add
+      responses:
+        200:
+          description: Players added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Team'
+
+components:
+  schemas:
+    Competition:
+      type: object
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+    Team:
+      type: object
+      properties:
+        name:
+          type: string
+        slogan:
+          type: string
+        competitions:
+          type: array
+          items:
+            type: string
+        players:
+          type: array
+          items:
+            type: string
